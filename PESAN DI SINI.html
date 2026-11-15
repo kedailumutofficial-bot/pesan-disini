@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PESAN DI SINI - Es Lumut Creamy & Pentol Bihun</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-3xl mx-auto px-4 py-3.5 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 min-w-[2.75rem] min-h-[2.75rem] rounded-full bg-black border-2 border-amber-400/80 shadow-md overflow-hidden flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 200 200" class="w-full h-full block" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <path id="topArc" d="M 30,100 A 70,70 0 1,1 170,100" />
+                            <path id="bottomArc" d="M 24,104 A 76,76 0 0,0 176,104" />
+                            <path id="leftPhone" d="M 55,132 A 52,52 0 0,1 62,64" />
+                            <path id="rightPhone" d="M 138,64 A 52,52 0 0,1 145,132" />
+                            <linearGradient id="bottleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#eab308"/>
+                                <stop offset="45%" stop-color="#fde047"/>
+                                <stop offset="100%" stop-color="#ca8a04"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="100" fill="#09090b"/>
+                        <circle cx="100" cy="100" r="92" fill="none" stroke="#facc15" stroke-width="2" opacity="0.85"/>
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="#fde047" stroke-width="1.5" opacity="0.85"/>
+                        <text fill="#fef08a" font-size="14.5" font-weight="800" letter-spacing="1.5" font-family="serif">
+                            <textPath href="#topArc" startOffset="50%" text-anchor="middle">- MOSS JELLY DRINK -</textPath>
+                        </text>
+                        <text fill="none" stroke="#facc15" stroke-width="1.2" font-size="15.5" font-weight="900" letter-spacing="1.2" font-family="sans-serif">
+                            <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">ES LUMUT CREAMY</textPath>
+                        </text>
+                        <text fill="#fde047" font-size="9.5" font-weight="600" letter-spacing="0.5" font-family="sans-serif">
+                            <textPath href="#leftPhone" startOffset="50%" text-anchor="middle">0821-3865-5780</textPath>
+                        </text>
+                        <text fill="#fde047" font-size="9.5" font-weight="600" letter-spacing="0.5" font-family="sans-serif">
+                            <textPath href="#rightPhone" startOffset="50%" text-anchor="middle">0822-2318-4800</textPath>
+                        </text>
+                        <g transform="translate(81, 48)">
+                            <rect x="9" y="0" width="20" height="8" rx="2" fill="#1e1b4b" stroke="#4c1d95" stroke-width="0.8"/>
+                            <rect x="11" y="8" width="16" height="5" fill="#fef9c3" opacity="0.8"/>
+                            <path d="M 6,18 Q 6,13 11,13 L 27,13 Q 32,13 32,18 L 33,92 Q 33,98 26,98 L 12,98 Q 5,98 5,92 Z" fill="url(#bottleGrad)"/>
+                            <path d="M 10,25 Q 15,28 12,35 M 24,30 Q 20,38 26,42 M 12,50 Q 18,52 14,60 M 22,65 Q 27,70 21,76 M 11,80 Q 17,83 13,89" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.7"/>
+                            <rect x="9" y="18" width="3" height="74" rx="1.5" fill="#ffffff" opacity="0.35"/>
+                        </g>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-900 leading-tight tracking-tight">PESAN DI SINI</h1>
+                    <p id="current-date" class="text-xs text-slate-500 font-medium">Memuat tanggal...</p>
+                </div>
+            </div>
+            <button id="btn-admin-toggle" class="text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition flex items-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-lock text-slate-400" id="admin-icon"></i>
+                <span id="admin-btn-text">Admin</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-3xl w-full mx-auto px-4 py-6 space-y-6">
+        <div id="admin-banner" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 fade-in">
+            <div class="flex items-start gap-3">
+                <div class="p-2 bg-amber-100 text-amber-700 rounded-lg mt-0.5"><i class="fa-solid fa-user-shield"></i></div>
+                <div>
+                    <h2 class="font-bold text-amber-900 text-sm">Mode Admin Aktif (Mas Rakha)</h2>
+                    <p class="text-xs text-amber-700 mt-0.5">Nomor WhatsApp opsional. Anda bisa langsung kelola pesanan.</p>
+                </div>
+            </div>
+            <button id="btn-open-reset-modal" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> Reset Pesanan Hari Ini
+            </button>
+        </div>
+
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6">
+            <div class="mb-5">
+                <h2 class="text-base sm:text-lg font-bold text-slate-900">Isi Data Pesanan</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1">Silakan isi nama dan pilih menu favoritmu.</p>
+            </div>
+
+            <form id="po-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Nama & Kelas <span class="text-rose-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400"><i class="fa-regular fa-user"></i></div>
+                        <input type="text" id="customer-name" required placeholder="Contoh: Budi - XI IPA 2" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Pilih Menu & Jumlah Pesanan <span class="text-rose-500">*</span></label>
+                    <div class="space-y-3">
+                        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-3">
+                            <div class="flex items-center justify-between border-b border-slate-200/70 pb-2">
+                                <span class="font-bold text-sm text-slate-900">Es Lumut Creamy</span>
+                                <span class="font-bold text-xs text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg">Rp 5.000 / botol</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-slate-200/80">
+                                    <span class="text-xs font-semibold text-slate-700">🍫 Coklat</span>
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" class="qty-btn-minus w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center" data-target="qty-coklat">-</button>
+                                        <input type="number" id="qty-coklat" data-name="Es Lumut (Coklat)" data-price="5000" value="0" min="0" class="item-qty-input w-9 text-center text-xs font-bold bg-transparent focus:outline-none">
+                                        <button type="button" class="qty-btn-plus w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs flex items-center justify-center" data-target="qty-coklat">+</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-slate-200/80">
+                                    <span class="text-xs font-semibold text-slate-700">🍵 Matcha</span>
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" class="qty-btn-minus w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center" data-target="qty-matcha">-</button>
+                                        <input type="number" id="qty-matcha" data-name="Es Lumut (Matcha)" data-price="5000" value="0" min="0" class="item-qty-input w-9 text-center text-xs font-bold bg-transparent focus:outline-none">
+                                        <button type="button" class="qty-btn-plus w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs flex items-center justify-center" data-target="qty-matcha">+</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-slate-200/80">
+                                    <span class="text-xs font-semibold text-slate-700">🍓 Strawberry</span>
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" class="qty-btn-minus w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center" data-target="qty-strawberry">-</button>
+                                        <input type="number" id="qty-strawberry" data-name="Es Lumut (Strawberry)" data-price="5000" value="0" min="0" class="item-qty-input w-9 text-center text-xs font-bold bg-transparent focus:outline-none">
+                                        <button type="button" class="qty-btn-plus w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs flex items-center justify-center" data-target="qty-strawberry">+</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-slate-200/80">
+                                    <span class="text-xs font-semibold text-slate-700">🥭 Mangga</span>
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" class="qty-btn-minus w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center" data-target="qty-mangga">-</button>
+                                        <input type="number" id="qty-mangga" data-name="Es Lumut (Mangga)" data-price="5000" value="0" min="0" class="item-qty-input w-9 text-center text-xs font-bold bg-transparent focus:outline-none">
+                                        <button type="button" class="qty-btn-plus w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs flex items-center justify-center" data-target="qty-mangga">+</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-slate-200/80">
+                                    <span class="text-xs font-semibold text-slate-700">🍠 Taro</span>
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" class="qty-btn-minus w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center" data-target="qty-taro">-</button>
+                                        <input type="number" id="qty-taro" data-name="Es Lumut (Taro)" data-price="5000" value="0" min="0" class="item-qty-input w-9 text-center text-xs font-bold bg-transparent focus:outline-none">
+                                        <button type="button" class="qty-btn-plus w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs flex items-center justify-center" data-target="qty-taro">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <p class="font-bold text-sm text-slate-900">🍢 Pentol Bihun</p>
+                                    <span class="font-bold text-xs text-slate-700 bg-slate-200/80 px-2 py-0.5 rounded-md">Rp 3.500</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80">
+                                <button type="button" class="qty-btn-minus w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center" data-target="qty-pentol">-</button>
+                                <input type="number" id="qty-pentol" data-name="Pentol Bihun" data-price="3500" value="0" min="0" class="item-qty-input w-9 text-center text-xs font-bold bg-transparent focus:outline-none">
+                                <button type="button" class="qty-btn-plus w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs flex items-center justify-center" data-target="qty-pentol">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5">
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase">Total Item</span>
+                            <span id="live-total-qty" class="block text-base font-bold text-slate-800">0 Pcs</span>
+                        </div>
+                        <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-xl px-4 py-2.5">
+                            <span class="text-[11px] font-semibold text-emerald-700 uppercase">Total Bayar</span>
+                            <span id="live-total-price" class="block text-base font-bold text-emerald-600">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-paper-plane"></i> Pesan Sekarang
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-5 sm:p-6 border-b border-slate-100 flex justify-between items-center">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900">Daftar Pemesan Hari Ini</h2>
+                    <p class="text-xs text-slate-500 mt-0.5" id="list-subtitle">Menampilkan nama dan pesanan.</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase block">Total Orang</span>
+                    <span id="total-customers" class="text-sm font-bold text-slate-800">0</span>
+                </div>
+            </div>
+            <div id="orders-container" class="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                <div class="p-10 text-center text-xs text-slate-400">Belum ada pesanan masuk hari ini.</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast & Modals -->
+    <div id="toast" class="fixed bottom-5 right-5 left-5 sm:left-auto sm:w-80 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg transform translate-y-24 opacity-0 transition-all z-50 flex items-center gap-3">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <p id="toast-message" class="text-xs font-medium"></p>
+    </div>
+
+    <div id="modal-admin-login" class="fixed inset-0 bg-slate-900/50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl">
+            <h3 class="font-bold text-base mb-2">Akses Admin</h3>
+            <p class="text-xs text-slate-500 mb-4">Masukkan PIN khusus:</p>
+            <form id="admin-login-form" class="space-y-4">
+                <input type="password" id="admin-pin-input" inputmode="numeric" maxlength="4" required class="w-full px-4 py-2.5 text-center tracking-widest font-bold text-lg bg-slate-50 border border-slate-200 rounded-xl focus:outline-none">
+                <div class="flex gap-2">
+                    <button type="button" id="btn-cancel-login" class="w-1/2 py-2 rounded-xl border text-xs">Batal</button>
+                    <button type="submit" class="w-1/2 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold">Masuk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-reset-confirm" class="fixed inset-0 bg-slate-900/50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-xl">
+            <h3 class="font-bold text-base mb-1">Reset Pesanan?</h3>
+            <p class="text-xs text-slate-500 mb-4">Semua pesanan hari ini akan dihapus.</p>
+            <div class="flex gap-2">
+                <button type="button" id="btn-cancel-reset" class="w-1/2 py-2 rounded-xl border text-xs">Batal</button>
+                <button type="button" id="btn-confirm-reset" class="w-1/2 py-2 rounded-xl bg-rose-600 text-white text-xs font-semibold">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PIN = "2012";
+        let isAdmin = false;
+        let ordersData = JSON.parse(localStorage.getItem('moss_po_orders') || '[]');
+
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+        function formatWhatsApp(raw) {
+            if (!raw) return '';
+            let cl = String(raw).replace(/\D/g, '');
+            if (!cl) return '';
+            if (cl.startsWith('0')) cl = '62' + cl.substring(1);
+            else if (!cl.startsWith('62')) cl = '62' + cl;
+            return cl;
+        }
+
+        function showToast(msg, isErr = false) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            document.getElementById('toast-icon').className = isErr ? "fa-solid fa-circle-exclamation text-rose-400 text-lg" : "fa-solid fa-circle-check text-emerald-400 text-lg";
+            t.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3000);
+        }
+
+        const qtyInputs = document.querySelectorAll('.item-qty-input');
+        function updateLive() {
+            let tQty = 0, tPrice = 0;
+            qtyInputs.forEach(inp => {
+                let q = Math.max(0, parseInt(inp.value) || 0);
+                tQty += q;
+                tPrice += q * (parseInt(inp.dataset.price) || 0);
+            });
+            document.getElementById('live-total-qty').textContent = tQty + ' Pcs';
+            document.getElementById('live-total-price').textContent = 'Rp ' + tPrice.toLocaleString('id-ID');
+        }
+
+        document.querySelectorAll('.qty-btn-minus').forEach(b => b.addEventListener('click', () => {
+            let i = document.getElementById(b.dataset.target);
+            if ((parseInt(i.value) || 0) > 0) { i.value = parseInt(i.value) - 1; updateLive(); }
+        }));
+        document.querySelectorAll('.qty-btn-plus').forEach(b => b.addEventListener('click', () => {
+            let i = document.getElementById(b.dataset.target);
+            i.value = (parseInt(i.value) || 0) + 1; updateLive();
+        }));
+        qtyInputs.forEach(i => i.addEventListener('input', updateLive));
+
+        function renderOrders() {
+            const container = document.getElementById('orders-container');
+            document.getElementById('total-customers').textContent = ordersData.length;
+            if (ordersData.length === 0) {
+                container.innerHTML = `<div class="p-10 text-center text-xs text-slate-400">Belum ada pesanan masuk hari ini.</div>`;
+                return;
+            }
+            container.innerHTML = ordersData.map((o, idx) => {
+                let adminDiv = '';
+                if (isAdmin) {
+                    adminDiv = `<div class="mt-2 pt-2 border-t border-slate-100 flex justify-between items-center bg-slate-50 px-3 py-1.5 rounded-lg text-xs">
+                        <span class="text-slate-400 italic">Mode Admin</span>
+                        <button onclick="delOrder('${o.id}')" class="px-2 py-1 bg-rose-100 text-rose-600 rounded"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    </div>`;
+                }
+                return `<div class="p-4 hover:bg-slate-50 transition">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-slate-100 text-center text-xs font-bold">${idx+1}</span><h3 class="font-bold text-sm">${o.name}</h3></div>
+                            <div class="mt-1 space-y-0.5">${o.items.map(i=>`<p class="text-xs text-slate-600">• ${i.name} x${i.qty}</p>`).join('')}</div>
+                        </div>
+                        <div class="text-right">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700">${o.qty} Pcs</span>
+                            <p class="text-[11px] font-semibold text-slate-500 mt-1">Rp ${o.totalPrice.toLocaleString('id-ID')}</p>
+                        </div>
+                    </div>
+                    ${adminDiv}
+                </div>`;
+            }).join('');
+        }
+
+        document.getElementById('po-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            let name = document.getElementById('customer-name').value.trim();
+            let items = [], tQty = 0, tPrice = 0;
+            qtyInputs.forEach(i => {
+                let q = parseInt(i.value) || 0;
+                if (q > 0) { items.push({ name: i.dataset.name, qty: q }); tQty += q; tPrice += q * parseInt(i.dataset.price); }
+            });
+            if (!name || tQty < 1) { showToast("Lengkapi nama dan pilih minimal 1 menu!", true); return; }
+            ordersData.push({ id: 'ORD-' + Date.now(), name, items, qty: tQty, totalPrice: tPrice });
+            localStorage.setItem('moss_po_orders', JSON.stringify(ordersData));
+            document.getElementById('customer-name').value = '';
+            qtyInputs.forEach(i => i.value = '0');
+            updateLive(); renderOrders(); showToast("Pesanan berhasil dicatat!");
+        });
+
+        const mLogin = document.getElementById('modal-admin-login');
+        const mReset = document.getElementById('modal-reset-confirm');
+
+        document.getElementById('btn-admin-toggle').addEventListener('click', () => {
+            if (isAdmin) { isAdmin = false; updateAdmin(); showToast("Keluar Admin."); }
+            else { document.getElementById('admin-pin-input').value = ''; mLogin.classList.remove('hidden'); mLogin.classList.add('flex'); }
+        });
+        document.getElementById('btn-cancel-login').addEventListener('click', () => mLogin.classList.add('hidden'));
+        document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (document.getElementById('admin-pin-input').value === ADMIN_PIN) {
+                isAdmin = true; mLogin.classList.add('hidden'); updateAdmin(); showToast("Berhasil masuk Admin!");
+            } else { showToast("PIN salah!", true); }
+        });
+
+        function updateAdmin() {
+            document.getElementById('admin-banner').classList.toggle('hidden', !isAdmin);
+            document.getElementById('admin-btn-text').textContent = isAdmin ? "Keluar Admin" : "Admin";
+            document.getElementById('admin-icon').className = isAdmin ? "fa-solid fa-unlock text-emerald-600" : "fa-solid fa-lock text-slate-400";
+            renderOrders();
+        }
+
+        window.delOrder = (id) => {
+            if (!isAdmin) return;
+            ordersData = ordersData.filter(o => o.id !== id);
+            localStorage.setItem('moss_po_orders', JSON.stringify(ordersData));
+            renderOrders(); showToast("Pesanan dihapus.");
+        };
+
+        document.getElementById('btn-open-reset-modal').addEventListener('click', () => { mReset.classList.remove('hidden'); mReset.classList.add('flex'); });
+        document.getElementById('btn-cancel-reset').addEventListener('click', () => mReset.classList.add('hidden'));
+        document.getElementById('btn-confirm-reset').addEventListener('click', () => {
+            if (!isAdmin) return;
+            ordersData = []; localStorage.setItem('moss_po_orders', JSON.stringify([]));
+            mReset.classList.add('hidden'); renderOrders(); showToast("Semua pesanan direset!");
+        });
+
+        renderOrders();
+    </script>
+</body>
+</html>
